@@ -1,29 +1,35 @@
-version: "3.9"
+version: '3.9'
 
 services:
   backend:
-    build: ./backend
+    image: firstdock:3       # your backend image
+    build: ./backend         # optional: rebuild from Dockerfile
     ports:
-      - "3000:3000"
+      - "3000:3000"          # expose backend port
     environment:
-      - MONGO_URI=mongodb://mongo:27017/guidiny
+      NODE_ENV: production
+      MONGO_URL: mongodb://admin:secret@mongodb:27017
     depends_on:
-      - mongo
+      - mongodb
 
   frontend:
+    image: frontenddock:0    # your frontend image
     build: ./frontend
     ports:
-      - "8080:80"
+      - "8080:80"            # expose frontend port
     depends_on:
       - backend
 
-  mongo:
-    image: mongo:7
+  mongodb:
+    image: mongo:6
+    container_name: mongodb
     ports:
       - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: chaymabaklouti59
+      MONGO_INITDB_ROOT_PASSWORD: 
     volumes:
-      - mongo-data:/data/db
+      - mongodb_data:/data/db
 
 volumes:
-  mongo-data:
-
+  mongodb_data:
