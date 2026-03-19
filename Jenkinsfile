@@ -4,8 +4,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/CHAYMA214/Guidiny',
-                    branch: 'master'
+                git url: 'https://github.com/CHAYMA214/Guidiny.git/',
+                    branch: 'chayma'
             }
         }
 
