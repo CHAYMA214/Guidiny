@@ -2,21 +2,21 @@ version: '3.9'
 
 services:
   backend:
-    image: firstdock:3       # your backend image
-    build: ./backend         # optional: rebuild from Dockerfile
+    image: firstdock:3
+    build: ./backend
     ports:
-      - "3000:3000"          # expose backend port
+      - "3000:3000"
     environment:
-      NODE_ENV: production
-      MONGO_URL: mongodb://admin:secret@mongodb:27017
+      NODE_ENV: ${NODE_ENV}
+      MONGO_URL: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DB}
     depends_on:
       - mongodb
 
   frontend:
-    image: frontenddock:0    # your frontend image
+    image: frontenddock:0
     build: ./frontend
     ports:
-      - "8080:80"            # expose frontend port
+      - "8080:80"
     depends_on:
       - backend
 
@@ -26,8 +26,9 @@ services:
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: chaymabaklouti59
-      MONGO_INITDB_ROOT_PASSWORD: chayma
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DB}
     volumes:
       - mongodb_data:/data/db
 
