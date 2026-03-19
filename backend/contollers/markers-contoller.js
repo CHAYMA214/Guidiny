@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const HttpError = require('../models/http-error');
 const getCoordsForAddress = require('../util/location');
 const Marker = require('../models/marker');
-const User = require('../models/User');
+const User = require('../models/user');
 const getAllMarkers = async (req, res, next) => {
   let markers;
   try {

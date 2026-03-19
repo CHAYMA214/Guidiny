@@ -2,21 +2,21 @@ version: '3.9'
 
 services:
   backend:
-    image: firstdock:3       # your backend image
-    build: ./backend         # optional: rebuild from Dockerfile
+    image: firstdock:3
+    build: ./backend
     ports:
-      - "3000:3000"          # expose backend port
+      - "3000:3000"
     environment:
       NODE_ENV: production
-      MONGO_URL: mongodb://admin:secret@mongodb:27017
+      MONGO_URL: mongodb://chaymabaklouti59:chayma@mongodb:27017/mern
     depends_on:
       - mongodb
 
   frontend:
-    image: frontenddock:0    # your frontend image
+    image: frontenddock:0
     build: ./frontend
     ports:
-      - "8080:80"            # expose frontend port
+      - "8080:80"
     depends_on:
       - backend
 
@@ -28,8 +28,10 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: chaymabaklouti59
       MONGO_INITDB_ROOT_PASSWORD: chayma
+      MONGO_INITDB_DATABASE: mern
     volumes:
       - mongodb_data:/data/db
 
 volumes:
   mongodb_data:
+  
