@@ -11,20 +11,22 @@ pipeline {
 
         stage('Setup env') {
             steps {
-                sh 'cp /var/jenkins_home/workspace/.env .env || true'
+                withCredentials([file(credentialsId: 'backend-env', variable: 'ENV_FILE')]) {
+                    sh 'cp $ENV_FILE .env'
+                }
             }
         }
 
         stage('Build') {
             steps {
-                sh 'docker compose build'
+                sh 'docker-compose build'
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'docker compose down || true'
-                sh 'docker compose up -d'
+                sh 'docker-compose down || true'
+                sh 'docker-compose up -d'
             }
         }
     }
