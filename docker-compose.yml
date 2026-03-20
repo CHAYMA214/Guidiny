@@ -6,11 +6,14 @@ services:
     build: ./backend
     ports:
       - "3000:3000"
+    env_file:
+      - .env
+      - ./backend/.env
     environment:
       NODE_ENV: ${NODE_ENV}
       MONGO_URL: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DB}
     depends_on:
-      - mongodb
+      - mongodb 
 
   frontend:
     image: frontenddock:0
@@ -33,7 +36,7 @@ services:
       - mongodb_data:/data/db
 
   jenkins:
-    image: jenkins/jenkins:lts
+    build: ./jenkins
     user: root
     ports:
       - "8090:8080"

@@ -9,6 +9,12 @@ pipeline {
             }
         }
 
+        stage('Setup env') {
+            steps {
+                sh 'cp /var/jenkins_home/workspace/.env .env || true'
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'docker compose build'
@@ -20,6 +26,15 @@ pipeline {
                 sh 'docker compose down || true'
                 sh 'docker compose up -d'
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
