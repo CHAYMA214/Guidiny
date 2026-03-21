@@ -16,7 +16,7 @@ const SignUp = () => {
   });
 const handleGoogleSuccess = async (credentialResponse) => {
   try {
-    const res = await fetch('/api/user/login/google', {
+    const res = await fetch('http://guidiny.fit/api/users/login/google', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tokenId: credentialResponse.credential })

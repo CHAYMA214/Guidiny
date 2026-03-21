@@ -21,7 +21,7 @@ const SignIn = () => {
     }
 
     try {
-      const res = await fetch('http://20.199.41.254:5000/api/user/login/google', {
+      const res = await fetch('http://guidiny.fit/api/users/login/google', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tokenId: credential }),
