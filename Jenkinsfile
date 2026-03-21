@@ -11,8 +11,22 @@ pipeline {
 
         stage('Setup env') {
             steps {
-                withCredentials([file(credentialsId: 'backend-env', variable: 'ENV_FILE')]) {
-                    sh 'cp $ENV_FILE .env'
+                withCredentials([
+                    string(credentialsId: 'MONGO_USERNAME', variable: 'MONGO_USERNAME'),
+                    string(credentialsId: 'MONGO_PASSWORD', variable: 'MONGO_PASSWORD'),
+                    string(credentialsId: 'MONGO_DB', variable: 'MONGO_DB'),
+                    string(credentialsId: 'JWT_SECRET', variable: 'JWT_SECRET'),
+                    string(credentialsId: 'NODE_ENV', variable: 'NODE_ENV'),
+                    string(credentialsId: 'GOOGLE_CLIENT_ID', variable: 'GOOGLE_CLIENT_ID')
+                ]) {
+                    sh '''
+                        echo "NODE_ENV=${NODE_ENV}" > .env
+                        echo "MONGO_USERNAME=${MONGO_USERNAME}" >> .env
+                        echo "MONGO_PASSWORD=${MONGO_PASSWORD}" >> .env
+                        echo "MONGO_DB=${MONGO_DB}" >> .env
+                        echo "JWT_SECRET=${JWT_SECRET}" >> .env
+                        echo "GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}" >> .env
+                    '''
                 }
             }
         }
@@ -32,11 +46,7 @@ pipeline {
     }
 
     post {
-        success {
-            echo 'Deployed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed!'
-        }
+        success { echo 'Deployed successfully!' }
+        failure { echo 'Pipeline failed!' }
     }
 }
