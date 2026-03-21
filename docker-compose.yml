@@ -13,8 +13,7 @@ services:
       - mongodb
 
   frontend:
-    image: frontenddock:0
-    build: ./frontend
+    image: frontenddock:0    build: ./frontend
     ports:
       - "5173:80"
     depends_on:
@@ -22,10 +21,6 @@ services:
 
   mongodb:
     image: mongo:6
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_DB}
     volumes:
       - mongodb_data:/data/db
 
