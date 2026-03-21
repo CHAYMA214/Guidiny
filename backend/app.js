@@ -4,11 +4,16 @@ const bodyParser=require('body-parser');
 require('dotenv').config();
 const app=express();
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin:[
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://guidiny.fit',
+    'http://www.guidiny.fit',
+    'http://20.199.41.254:5173'],
   credentials: true
 }));
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin',req.headers.origin|| '*');
   res.setHeader(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
