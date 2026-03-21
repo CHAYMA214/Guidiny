@@ -34,8 +34,7 @@ app.use((req, res, next) => {
   const error = new HttpError('Could not find this route.', 404);
   throw error;
 });
-mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.xmp46hy.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority&appName=Cluster0`)
-  .then(()=>{app.listen(3001);})
+mongoose.connect(process.env.MONGO_URL || 'mongodb://pipeline-mongodb-1:27017/mern')  .then(()=>{app.listen(3001);})
 .catch(err=>{
   console.log(err);
 });
