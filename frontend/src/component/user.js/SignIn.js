@@ -49,7 +49,7 @@ const SignIn = () => {
       toast.error('Please fill in both fields.');
       return;
     }
-      const res = await fetch('http://20.199.41.254:5000/api/users/login', {
+      const res = await fetch('http://guidiny.fit/api/users/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

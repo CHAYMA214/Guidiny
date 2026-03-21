@@ -19,7 +19,7 @@ const ResetPassword = () => {
     }
 
     try {
-      const response = await fetch(`http://20.199.41.254:5000/api/users/reset-password/${token}`, {
+      const response = await fetch(`http://guidiny.fit/api/users/reset-password/${token}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password }),
