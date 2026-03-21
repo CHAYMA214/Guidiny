@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git url: 'https://github.com/CHAYMA214/Guidiny.git',
-                    branch: 'chayma'
+                    branch: 'server'
             }
         }
 
