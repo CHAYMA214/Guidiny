@@ -20,3 +20,4 @@ COPY --chown=node:node . .
 EXPOSE 3000
 
 CMD ["node", "app.js"]
+#kckcjskj
