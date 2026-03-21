@@ -1,25 +1,22 @@
-version: '3.9'
-
 services:
   backend:
     image: firstdock:3
     build: ./backend
     ports:
-      - "3000:3000"
+      - "5000:3000"
     env_file:
       - .env
-      - ./backend/.env
     environment:
       NODE_ENV: ${NODE_ENV}
       MONGO_URL: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DB}
     depends_on:
-      - mongodb 
+      - mongodb
 
   frontend:
     image: frontenddock:0
     build: ./frontend
     ports:
-      - "3000:80"
+      - "5173:80"
     depends_on:
       - backend
 
@@ -32,7 +29,5 @@ services:
     volumes:
       - mongodb_data:/data/db
 
-
 volumes:
   mongodb_data:
-
