@@ -41,12 +41,14 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                sh 'docker-compose down || true'
-                sh 'docker-compose up -d'
-            }
-        }
+      stage('Deploy') {
+    steps {
+        sh 'docker-compose down --remove-orphans || true'
+        sh 'docker stop $(docker ps -q) 2>/dev/null || true'
+        sh 'docker rm $(docker ps -aq) 2>/dev/null || true'
+        sh 'docker-compose up -d'
+    }
+}
     }
 
     post {
