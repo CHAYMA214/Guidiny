@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../user.js/auth";
-import { MapContainer, TileLayer, Marker, Circle ,popup} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Circle ,Popup} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "../../css/map.css";
 import { ToastContainer, toast } from "react-toastify";
