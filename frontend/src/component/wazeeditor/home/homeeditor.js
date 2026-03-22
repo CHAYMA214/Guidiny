@@ -24,7 +24,7 @@ async function saveMarkerToBackend(marker, token) {
     type: marker.type,
     description: marker.description,
     address: marker.address,
-    image: 'https://upload.wikimedia.org/wikipedia/commons/1/10/Empire_State_Building_(aerial_view).jpg',
+    image: marker.image,
     creator: marker.creator,
     location: {
       lat: marker.location[0],
