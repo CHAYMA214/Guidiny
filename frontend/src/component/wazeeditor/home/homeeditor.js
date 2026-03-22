@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMapEvents
+} from 'react-leaflet';
 import { ToastContainer, toast } from 'react-toastify';
 import { useLocation } from 'react-router-dom';
 import L from 'leaflet';
@@ -25,12 +31,11 @@ async function saveMarkerToBackend(marker, token) {
       lng: marker.location[1],
     },
   };
-
   const res = await fetch('/api/markers', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}` // ← token ajouté
+      'Authorization': `Bearer ${token}`
     },
     body: JSON.stringify(payload),
   });
@@ -46,7 +51,7 @@ async function deleteMarkerFromBackend(markerId, token) {
   const res = await fetch(`/api/markers/${markerId}`, {
     method: 'DELETE',
     headers: {
-      'Authorization': `Bearer ${token}` // ← token ajouté
+      'Authorization': `Bearer ${token}`
     }
   });
   if (!res.ok) {
@@ -68,7 +73,7 @@ function MarkerDynamicPopup({ marker, onUpdate, onFieldChange, eventHandlers, to
   const saveAndClose = async (e) => {
     e.preventDefault();
     try {
-      await saveMarkerToBackend(marker, token); // ← token passé
+      await saveMarkerToBackend(marker, token);
       onUpdate(marker.id, { ...marker, isSaved: true });
       toast.success('Marqueur enregistré avec succès');
     } catch (err) {
@@ -78,7 +83,7 @@ function MarkerDynamicPopup({ marker, onUpdate, onFieldChange, eventHandlers, to
 
   const handleDelete = async () => {
     try {
-      await deleteMarkerFromBackend(marker.id, token); // ← token passé
+      await deleteMarkerFromBackend(marker.id, token);
       onUpdate(marker.id, null);
       toast.success("Marqueur supprimé !");
     } catch (error) {
@@ -129,7 +134,15 @@ function MarkerDynamicPopup({ marker, onUpdate, onFieldChange, eventHandlers, to
             />
             <button
               onClick={saveAndClose}
-              style={{ marginTop: 8, width: '100%', padding: '6px', background: 'green', color: 'white', border: 'none', borderRadius: 4 }}
+              style={{
+                marginTop: 8,
+                width: '100%',
+                padding: '6px',
+                background: 'green',
+                color: 'white',
+                border: 'none',
+                borderRadius: 4
+              }}
             >
               Enregistrer
             </button>
@@ -137,9 +150,9 @@ function MarkerDynamicPopup({ marker, onUpdate, onFieldChange, eventHandlers, to
         ) : (
           <div style={{ width: 220 }}>
             <strong>Type:</strong> {marker.type}<br />
-            <strong>Description:</strong>
+            <strong>Description:</strong><br />
             <div>{marker.description || 'Aucune description'}</div>
-            <strong>Adresse:</strong>
+            <strong>Adresse:</strong><br />
             <div>{marker.address}</div>
             {marker.image && (
               <>
@@ -147,10 +160,18 @@ function MarkerDynamicPopup({ marker, onUpdate, onFieldChange, eventHandlers, to
                 <img src={marker.image} alt="marker" style={{ width: '100%' }} />
               </>
             )}
-            <strong>Créateur:</strong>
+            <strong>Créateur:</strong><br />
             <div>{marker.creator}</div>
             <button
-              style={{ marginTop: 10, backgroundColor: '#d9534f', color: 'white', border: 'none', padding: '6px', width: '100%', borderRadius: 4 }}
+              style={{
+                marginTop: 10,
+                backgroundColor: '#d9534f',
+                color: 'white',
+                border: 'none',
+                padding: '6px',
+                width: '100%',
+                borderRadius: 4,
+              }}
               onClick={handleDelete}
             >
               Supprimer
@@ -163,14 +184,16 @@ function MarkerDynamicPopup({ marker, onUpdate, onFieldChange, eventHandlers, to
 }
 
 export default function MyMap() {
-  const { user, token } = useAuth(); // ← récupère le token depuis useAuth
+  const { user, token } = useAuth();
   const location = useLocation();
   const label = new URLSearchParams(location.search).get("label");
   const [markers, setMarkers] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
 
   const handleFieldChange = (id, field, value) => {
-    setMarkers(prev => prev.map(m => m.id === id ? { ...m, [field]: value } : m));
+    setMarkers(prev =>
+      prev.map(m => m.id === id ? { ...m, [field]: value } : m)
+    );
   };
 
   const handleUpdate = (id, updated) => {
@@ -183,7 +206,9 @@ export default function MyMap() {
 
   const getAddressFromCoords = async (lat, lng) => {
     try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
+      );
       const data = await res.json();
       return data.display_name || 'Adresse non trouvée';
     } catch {
@@ -209,11 +234,11 @@ export default function MyMap() {
 
   useEffect(() => {
     const fetchUserMarkers = async () => {
-      if (!user || !token) return; // ← vérifie aussi le token
+      if (!user || !token) return;
 
       const response = await fetch(`/api/markers/user/${user.id}`, {
         headers: {
-          'Authorization': `Bearer ${token}` // ← token ajouté
+          'Authorization': `Bearer ${token}`
         }
       });
 
@@ -239,7 +264,11 @@ export default function MyMap() {
 
   return (
     <div style={{ height: '100vh', width: '100%' }}>
-      <MapContainer center={[35.82539, 10.63699]} zoom={13} style={{ height: '100%', width: '100%' }}>
+      <MapContainer
+        center={[35.82539, 10.63699]}
+        zoom={13}
+        style={{ height: '100%', width: '100%' }}
+      >
         <TileLayer
           attribution='&copy; OpenStreetMap contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -249,10 +278,12 @@ export default function MyMap() {
           <MarkerDynamicPopup
             key={marker.id}
             marker={marker}
-            token={token} // ← token passé en prop
+            token={token}
             onUpdate={handleUpdate}
             onFieldChange={handleFieldChange}
-            eventHandlers={{ click: () => setSelectedMarker(marker) }}
+            eventHandlers={{
+              click: () => setSelectedMarker(marker),
+            }}
           />
         ))}
       </MapContainer>
