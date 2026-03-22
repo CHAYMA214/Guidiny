@@ -84,11 +84,18 @@ function UserDashboard({ setSelectedMarker }) {
               }
             }}
           >
-            <Popup>
-              <strong>{marker.type}</strong><br />
-              {marker.description}<br />
-              {marker.address}
-            </Popup>
+        <Popup>
+  <strong>{marker.type}</strong><br />
+  {marker.description}<br />
+  {marker.address}<br />
+  {marker.image && (
+    <img 
+      src={marker.image} 
+      alt={marker.type} 
+      style={{ width: '100%', marginTop: '8px', borderRadius: '4px' }} 
+    />
+  )}
+</Popup>
           </Marker>
         ))}
 
