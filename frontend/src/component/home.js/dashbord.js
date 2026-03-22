@@ -40,7 +40,6 @@ function UserDashboard({ setSelectedMarker }) {
         const data = await response.json();
         setAllMarkers(data.markers);
       } catch (err) {
-        console.error('Erreur lors de la récupération des marqueurs :', err);
       }
     };
     fetchMarkers();
@@ -101,3 +100,4 @@ function UserDashboard({ setSelectedMarker }) {
 }
 
 export default UserDashboard;
+
