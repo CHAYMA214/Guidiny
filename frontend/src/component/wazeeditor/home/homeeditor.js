@@ -225,7 +225,7 @@ export default function MyMap() {
       description: '',
       address,
       location: position,
-      image: 'https://upload.wikimedia.org/wikipedia/commons/1/10/Empire_State_Building_(aerial_view).jpg',
+      image:'' ,
       creator: user.id,
       isSaved: false
     };
