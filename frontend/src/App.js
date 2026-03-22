@@ -24,13 +24,8 @@ function App() {
   return (
           <GoogleOAuthProvider clientId="429684687360-g2k8r105lva833bthgi3upbgrmh69b9j.apps.googleusercontent.com">
         <Routes>
-
-         <Route path="/" element={
-  <>
-<Map >
-  
-</Map>
-  </>
+<Route path="/" element={
+  <Map setSelectedMarker={setSelectedMarker} />
 } />
 
           <Route path="/reset-password/:token" element={<ResetPassword />} />
