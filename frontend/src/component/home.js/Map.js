@@ -17,16 +17,18 @@ const DefaultIcon = L.icon({
 });
 
 function Map() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth(); // ← ajoute loading
   const [position, setPosition] = useState(null);
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
 
   useEffect(() => {
-    if (!user) {
-      toast.error("Please login to access the map"); // ← toast seulement, pas de redirect
+    if (!loading && !user) { // ← attend que loading soit false
+      toast.error("Please login to access the map");
     }
-  }, [user]);
+  }, [user, loading]);
+
+  if (loading) return null; // ← ne rend rien pendant le chargement
 
   return (
     <div style={{ position: "relative", height: "100vh", width: "100%" }}>
