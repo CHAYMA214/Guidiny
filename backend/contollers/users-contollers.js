@@ -27,7 +27,7 @@ exports.googleLogin = async (req, res, next) => {
       await user.save();
     }
 
-    const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET || 'secret', { expiresIn: '7d' });
 
     res.status(200).json({ user: user.toObject({ getters: true }), token });
   } catch (err) {
@@ -58,7 +58,7 @@ exports.signup = async (req, res, next) => {
     const user = new User({ name, email, password: hashedPassword });
     await user.save();
 
-    const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET || 'secret', { expiresIn: '7d' });
     res.status(201).json({ user: user.toObject({ getters: true }), token });
   } catch (err) {
     next(new HttpError('Signup failed.', 500));
@@ -74,7 +74,7 @@ exports.login = async (req, res, next) => {
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) return next(new HttpError('Invalid credentials.', 401));
 
-    const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET || 'secret', { expiresIn: '7d' });
     res.json({ user: user.toObject({ getters: true }), token });
   } catch (err) {
     next(new HttpError('Login failed.', 500));
