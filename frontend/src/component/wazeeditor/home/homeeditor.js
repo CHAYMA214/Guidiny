@@ -19,15 +19,31 @@ const blueIcon = new L.Icon({
   iconAnchor: [10, 34],
 });
 
+// Dans saveMarkerToBackend, transforme avant d'envoyer :
 async function saveMarkerToBackend(marker) {
+  const payload = {
+    type: marker.type,
+    description: marker.description,
+    address: marker.address,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/1/10/Empire_State_Building_(aerial_view).jpg', // ← URL fixe, ignore l'image uploadée
+    creator: marker.creator,
+    location: {                          
+      lat: marker.location[0],
+      lng: marker.location[1],
+    },
+  };
+
+  console.log('=== Payload envoyé ===', payload);
+
   const res = await fetch('/api/markers', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(marker),
+    body: JSON.stringify(payload),
   });
   if (!res.ok) {
     const errorData = await res.json();
-    throw new Error(errorData.message || 'Erreur lors de l’enregistrement');
+    console.log('=== Erreur backend ===', errorData);
+    throw new Error(errorData.message || 'Erreur lors de l\'enregistrement');
   }
   return await res.json();
 }
@@ -92,18 +108,22 @@ function MarkerDynamicPopup({ marker, onUpdate, onFieldChange, eventHandlers }) 
               style={{ width: '100%' }}
             />
             <label>Image:</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files[0];
-                if (file) {
-                  const localUrl = URL.createObjectURL(file);
-                  onFieldChange(marker.id, 'image', localUrl);
-                }
-              }}
-              style={{ width: '100%' }}
-            />
+          // Remplace le handler image dans MarkerDynamicPopup
+<input
+  type="file"
+  accept="image/*"
+  onChange={(e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        onFieldChange(marker.id, 'image', reader.result); // base64
+      };
+      reader.readAsDataURL(file);
+    }
+  }}
+  style={{ width: '100%' }}
+/>
             <label>Créateur:</label>
             <input
               type="text"
@@ -273,3 +293,5 @@ export default function MyMap() {
     </div>
   );
 }
+
+

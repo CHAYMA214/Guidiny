@@ -1,14 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { FaGasPump, FaChargingStation, FaWrench, FaTint } from 'react-icons/fa';
+import { FaFilm, FaTheaterMasks } from 'react-icons/fa';
 
-const lieuxSpecifiquesData = [
-  { label: 'Station-service',   icon: <FaGasPump size={24} color="#F59E0B" /> },
-  { label: 'Station de charge', icon: <FaChargingStation size={24} color="#3B82F6" /> },
-  { label: 'Garage',            icon: <FaWrench size={24} color="#6B7280" /> },
-  { label: 'Lavage',            icon: <FaTint size={24} color="#06B6D4" /> },
+const lieuxculturesData = [
+  { label: 'Cinéma',  icon: <FaFilm size={24} color="#E11D48" /> },
+  { label: 'Théâtre', icon: <FaTheaterMasks size={24} color="#8B5CF6" /> },
 ];
 
-const LieuxentretienMenuPage = () => {
+const LieuxculturesMenuPage = () => {
   const navigate = useNavigate();
 
   const goToEditor = (label) => {
@@ -28,9 +26,9 @@ const LieuxentretienMenuPage = () => {
       borderBottomRightRadius: '15px',
       boxShadow: '2px 0 5px rgba(0,0,0,0.1)'
     }}>
-      <h4 className="text-lg font-bold mb-4 whitespace-nowrap">Entretien automobile :</h4>
+      <h5 className="text-lg font-bold mb-4 whitespace-nowrap">Culture et divertissement :</h5>
 
-      {lieuxSpecifiquesData.map((category) => (
+      {lieuxculturesData.map((category) => (
         <div
           key={category.label}
           onClick={() => goToEditor(category.label)}
@@ -55,4 +53,4 @@ const LieuxentretienMenuPage = () => {
   );
 };
 
-export default LieuxentretienMenuPage;
+export default LieuxculturesMenuPage;

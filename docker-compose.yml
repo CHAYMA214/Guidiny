@@ -2,6 +2,7 @@ services:
   backend:
     image: firstdock:3
     build: ./backend
+    restart: always
     ports:
       - "5000:3000"
     env_file:
@@ -12,6 +13,7 @@ services:
   frontend:
     image: frontenddock:0
     build: ./frontend
+    restart: always
     ports:
       - "5173:3000"
     depends_on:
@@ -19,6 +21,7 @@ services:
 
   mongodb:
     image: mongo:6
+    restart: always
     volumes:
       - mongodb_data:/data/db
 

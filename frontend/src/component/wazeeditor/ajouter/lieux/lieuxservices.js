@@ -1,23 +1,11 @@
 import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
-
-const MapEditorPage = () => {
-  const { id } = useParams();
-  
-  return <div>Éditeur de carte de l'utilisateur {id}</div>;
-};
+import { FaShoppingCart, FaPills } from 'react-icons/fa';
 
 const lieuxServicesData = [
-    {
-      label: 'Supermarché',
-      icon: '🛒',
-    },
-    {
-      label: 'Pharmacie',
-      icon: '💊',
-    }
-  ];
-  
+  { label: 'Supermarché', icon: <FaShoppingCart size={24} color="#10B981" /> },
+  { label: 'Pharmacie',   icon: <FaPills size={24} color="#EF4444" /> },
+];
+
 const LieuxserviceMenuPage = () => {
   const navigate = useNavigate();
 
@@ -38,24 +26,26 @@ const LieuxserviceMenuPage = () => {
       borderBottomRightRadius: '15px',
       boxShadow: '2px 0 5px rgba(0,0,0,0.1)'
     }}>
-      <h3 >Commerces et services:</h3>
+      <h5  className="text-lg font-bold mb-4 whitespace-nowrap">Commerces et services :</h5>
+
       {lieuxServicesData.map((category) => (
         <div
           key={category.label}
-          onClick={() => goToEditor(category.label)}          className={`
-            flex items-center p-2 rounded-md cursor-pointer
-            transition-all duration-150 btn btn-outline-secondary w-100 mt-2
-          `}  >        
-          <div className="flex items-center">
-            <span className="text-xl mr-2">{category.icon}</span>
-            <span className="font-semibold" style={{ color: category.color }}>{category.label}</span>
-          </div>
-          <p className="text-sm text-gray-600">{category.description}</p>
+          onClick={() => goToEditor(category.label)}
+          className="flex items-center p-2 rounded-md cursor-pointer transition-all duration-150 btn btn-outline-secondary w-100 mt-2"
+        >
+          <span style={{ minWidth: '36px', display: 'flex', justifyContent: 'center' }}>
+            {category.icon}
+          </span>
+          <span style={{ marginLeft: '12px' }} className="font-semibold">
+            {category.label}
+          </span>
         </div>
       ))}
+
       <button
-        onClick={() => goToEditor('/lieux')}
-        className="mt-4 px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded"
+        onClick={() => navigate('/lieux')} 
+        className="mt-4 px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded w-100"
       >
         Retour
       </button>
