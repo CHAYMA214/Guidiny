@@ -30,8 +30,8 @@ const myPositionIcon = L.icon({
 function UserDashboard({ setSelectedMarker }) {
   const [position, setPosition] = useState(null);
   const [allMarkers, setAllMarkers] = useState([]);
-  const [start, setStart] = useState(null);  // ✅ déplacé à l’intérieur
-  const [end, setEnd] = useState(null);      // ✅ déplacé à l’intérieur
+  const [start, setStart] = useState(null);  
+  const [end, setEnd] = useState(null);     
 
   useEffect(() => {
     const fetchMarkers = async () => {
