@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../user.js/auth";
-import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Circle } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "../../css/map.css";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MapControls from "../tools/mapcontrollers";
 import LeafletRoutingMachine from "../tools/wrapper";
@@ -19,16 +18,15 @@ const DefaultIcon = L.icon({
 
 function Map() {
   const { user } = useAuth();
-  const navigate = useNavigate();
   const [position, setPosition] = useState(null);
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
 
   useEffect(() => {
     if (!user) {
-      navigate('/login');
+      toast.error("Please login to access the map"); // ← toast seulement, pas de redirect
     }
-  }, [user, navigate]);
+  }, [user]);
 
   return (
     <div style={{ position: "relative", height: "100vh", width: "100%" }}>
