@@ -5,6 +5,14 @@ services:
     restart: always
     ports:
       - "5000:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - MONGO_URL=${MONGO_URL}
+      - MONGO_USERNAME=${MONGO_USERNAME}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_DB=${MONGO_DB}
+      - JWT_SECRET=${JWT_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
     depends_on:
       - mongodb
 
@@ -20,6 +28,10 @@ services:
   mongodb:
     image: mongo:6
     restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_DB}
     volumes:
       - mongodb_data:/data/db
 
