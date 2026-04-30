@@ -1,9 +1,13 @@
-FROM node:20
+FROM node:20 AS builder
 WORKDIR /usr/src/app
-ENV NODE_ENV=production
 COPY package*.json ./
-RUN npm set cache /usr/src/app/.npm && \
-    npm ci --omit=dev --legacy-peer-deps
-COPY --chown=node:node . .
+RUN npm ci --omit=dev --legacy-peer-deps
+COPY . .
+RUN npm run build
+
+FROM node:20-alpine
+WORKDIR /usr/src/app
+RUN npm install -g serve
+COPY --from=builder /usr/src/app/build ./build
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["serve", "-s", "build", "-l", "3000"]
