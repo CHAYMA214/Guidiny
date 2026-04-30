@@ -9,7 +9,7 @@ pipeline {
             }
         }
 
-        stage('Setup env') {
+        stage('Build') {
             steps {
                 withCredentials([
                     string(credentialsId: 'MONGO_USERNAME', variable: 'MONGO_USERNAME'),
@@ -21,36 +21,50 @@ pipeline {
                     string(credentialsId: 'MONGO_URL', variable: 'MONGO_URL')
                 ]) {
                     sh '''
-                        echo "NODE_ENV=${NODE_ENV}" > .env
-                        echo "MONGO_URL=${MONGO_URL}" >> .env
-                        echo "MONGO_USERNAME=${MONGO_USERNAME}" >> .env
-                        echo "MONGO_PASSWORD=${MONGO_PASSWORD}" >> .env
-                        echo "MONGO_DB=${MONGO_DB}" >> .env
-                        echo "JWT_SECRET=${JWT_SECRET}" >> .env
-                        echo "GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}" >> .env
-                        cp .env backend/.env
-                        cp .env frontend/.env
+                        docker-compose build \
+                            --build-arg NODE_ENV=$NODE_ENV \
+                            --build-arg MONGO_URL=$MONGO_URL \
+                            --build-arg MONGO_USERNAME=$MONGO_USERNAME \
+                            --build-arg MONGO_PASSWORD=$MONGO_PASSWORD \
+                            --build-arg MONGO_DB=$MONGO_DB \
+                            --build-arg JWT_SECRET=$JWT_SECRET \
+                            --build-arg GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
                     '''
                 }
             }
         }
 
-        stage('Build') {
-            steps {
-                sh 'docker-compose build'
-            }
-        }
-
         stage('Deploy') {
             steps {
-                sh 'docker-compose down --remove-orphans || true'
-                sh 'docker-compose up -d'
+                withCredentials([
+                    string(credentialsId: 'MONGO_USERNAME', variable: 'MONGO_USERNAME'),
+                    string(credentialsId: 'MONGO_PASSWORD', variable: 'MONGO_PASSWORD'),
+                    string(credentialsId: 'MONGO_DB', variable: 'MONGO_DB'),
+                    string(credentialsId: 'JWT_SECRET', variable: 'JWT_SECRET'),
+                    string(credentialsId: 'NODE_ENV', variable: 'NODE_ENV'),
+                    string(credentialsId: 'GOOGLE_CLIENT_ID', variable: 'GOOGLE_CLIENT_ID'),
+                    string(credentialsId: 'MONGO_URL', variable: 'MONGO_URL')
+                ]) {
+                    sh '''
+                        docker-compose down --remove-orphans || true
+                        
+                        export NODE_ENV=$NODE_ENV
+                        export MONGO_URL=$MONGO_URL
+                        export MONGO_USERNAME=$MONGO_USERNAME
+                        export MONGO_PASSWORD=$MONGO_PASSWORD
+                        export MONGO_DB=$MONGO_DB
+                        export JWT_SECRET=$JWT_SECRET
+                        export GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+                        
+                        docker-compose up -d
+                    '''
+                }
             }
         }
     }
 
     post {
-        success { echo 'Deployed successfully!' }
-        failure { echo 'Pipeline failed!' }
+        success { echo '✅ Deployed successfully!' }
+        failure { echo '❌ Pipeline failed!' }
     }
 }
