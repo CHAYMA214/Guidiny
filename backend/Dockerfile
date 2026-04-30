@@ -7,9 +7,7 @@ ENV NODE_ENV=production
 COPY package*.json ./
 
 # Install only production dependencies and ignore peer conflicts
-RUN --mount=type=cache,target=/usr/src/app/.npm \
-    npm set cache /usr/src/app/.npm && \
-    npm ci --only=production --legacy-peer-deps
+RUN npm ci --only=production --legacy-peer-deps
 
 # Set user
 USER node
