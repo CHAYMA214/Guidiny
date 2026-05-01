@@ -4,12 +4,16 @@ const bodyParser=require('body-parser');
 require('dotenv').config();
 const app=express();
 app.use(cors({
-  origin:[
+  origin: [
     'http://localhost:3000',
     'http://localhost:5173',
     'http://guidiny.fit',
+    'https://guidiny.fit',
     'http://www.guidiny.fit',
-    'http://20.199.41.254:5173'],
+    'https://www.guidiny.fit',
+    'https://upbeat-upliftment-prod.up.railway.app',
+    'http://20.199.41.254:5173'
+  ],
   credentials: true
 }));
 app.use((req, res, next) => {
