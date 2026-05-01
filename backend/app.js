@@ -39,7 +39,14 @@ app.use((req, res, next) => {
   const error = new HttpError('Could not find this route.', 404);
   throw error;
 });
-mongoose.connect(process.env.MONGO_URL || 'mongodb://pipeline-mongodb-1:27017/mern')  .then(()=>{app.listen(3000);})
-.catch(err=>{
-  console.log(err);
-});
+mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost:27017/mern')
+  .then(() => {
+    const PORT = process.env.PORT || 3000
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`)
+      console.log('MongoDB connected successfully')
+    })
+  })
+  .catch(err => {
+    console.error('MongoDB connection error:', err)
+  })
